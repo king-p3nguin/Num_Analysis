@@ -26,7 +26,7 @@ def init(x,f):                  # Initialize
     nx=len(f)
     i=np.arange(nx)
     x[:]=(i+0.5-xoff)*dx-0.5*lx
-    f[:]=np.exp(-(x*x)/(16*dx*dx))
+    f[:]=np.exp(-(x[:]*x[:])/(16*dx*dx))
 
 def bc1d(f,xoff,dnx=0):         # Boundary condition
     nx = len(f)
