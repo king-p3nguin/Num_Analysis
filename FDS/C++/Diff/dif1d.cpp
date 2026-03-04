@@ -32,7 +32,6 @@ void dif1di(double* f, double kx, double dt, double dx, int nx, int xoff,
   const double bdd=(1.0-alpha)*dd;
   double a[nx],b[nx],c[nx],d[nx];
 
-  alpha=(fabs(alpha) > 1)?1.0:alpha;
   for (i=0;i<nx;i++){
     a[i]=-add;
     b[i]=1.0+2.0*add;
