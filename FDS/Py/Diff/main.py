@@ -58,14 +58,14 @@ def dif1di(f,kx,dt,dx,xoff,alpha=1.0):    # Implicit scheme for diffusion
     d[1:-1]=(1.0-2.0*bdd)*f[1:-1]+bdd*(f[2:]+f[:-2])
     f[:]=solve_banded((1,1),ab,d)
     
-def main():
-    init(x,f)
-    t=0.0
+def main(t,tmax):
     while(t < tmax):
         bc1d(f,xoff,1)
         dif1di(f,kx,dt,dx,xoff)
         t += dt
-    print(f"Simulation end at t = {t:.6f}")
-    
+    return t
+
 if __name__ == "__main__":
-    main()
+    init(x,f)
+    t=main(0,tmax)
+    print(f"Simulation end at t = {t:.6f}")

@@ -62,10 +62,8 @@ def csl3rd(f,v,dt,dx,xoff=2):       # 3rd-order conservative semi-Lagrangian sch
     flux[2:-1]=0.5*((1+sgnv)*ftl+(1-sgnv)*ftr)
     f[xoff:nx-xoff]-=nu*(flux[xoff+1:nx-xoff+1]-flux[xoff:nx-xoff])    
     
-def main():
+def main(t,tmax):
     fcpy=np.zeros_like(f)
-    init(x,f)
-    t=0.0
     while(t < tmax):
         bc1d(f,xoff,0)
         if (1):                 # 1 for SL scheme, 0 for FV-RK2 scheme
@@ -77,8 +75,9 @@ def main():
             fv3rd(f,v,dt,dx,xoff)
             f[xoff:nx-xoff]=0.5*(f[xoff:nx-xoff]+fcpy[xoff:nx-xoff])
         t += dt
-    print(f"Simulation end at t = {t:.6f}")
+    return t
     
 if __name__ == "__main__":
-    main()
-    
+    init(x,f)
+    t=main(0,tmax)
+    print(f"Simulation end at t = {t:.6f}")

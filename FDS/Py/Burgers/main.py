@@ -52,15 +52,15 @@ def bgs_fv(f,dt,dx,xoff=1):
     flux[1:]=np.where((f[:-1]+f[1:]) > 0,0.5*f[:-1]**2,0.5*f[1:]**2)
     f[xoff:nx-xoff]-=dtdx*(flux[xoff+1:nx-xoff+1]-flux[xoff:nx-xoff])
     
-def main():
-    init(x,f)
-    t=0.0
+def main(t,tmax):
     while(t < tmax):
         bc1d(f,xoff,0)
         # bgs_fd(f,dt,dx,xoff)
         bgs_fv(f,dt,dx,xoff)
         t += dt
-    print(f"Simulation end at t = {t:.6f}")
-    
+    return t
+
 if __name__ == "__main__":
-    main()
+    init(x,f)
+    t=main(0,tmax)
+    print(f"Simulation end at t = {t:.6f}")

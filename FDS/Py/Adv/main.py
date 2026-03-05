@@ -53,16 +53,15 @@ def upwd(f,v,dt,dx,xoff=1):       # Upwind scheme
     df[1:-1]=0.5*((1+sgnv)*(f[1:-1]-f[:-2])+(1-sgnv)*(f[2:]-f[1:-1]))
     f[xoff:nx-xoff]-=nu*df[xoff:nx-xoff]
     
-def main():
-    init(x,f)
-    t=0.0
+def main(t,tmax):
     while(t < tmax):
         bc1d(f,xoff,0)
         # ftcs(f,v,dt,dx,xoff)
         upwd(f,v,dt,dx,xoff)
         t += dt
-    print(f"Simulation end at t = {t:.6f}")
-    
+    return t
+
 if __name__ == "__main__":
-    main()
-    
+    init(x,f)
+    t=main(0,tmax)
+    print(f"Simulation end at t = {t:.6f}")
