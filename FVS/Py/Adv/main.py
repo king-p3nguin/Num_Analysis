@@ -20,7 +20,6 @@ dt=np.abs(cfl*dx/v)
 # Variables
 x=np.zeros(nx)
 f=np.zeros(nx)
-fcpy=np.zeros_like(f)
 
 # Functions
 def init(x,f):                  # Initialize
@@ -64,11 +63,12 @@ def csl3rd(f,v,dt,dx,xoff=2):       # 3rd-order conservative semi-Lagrangian sch
     f[xoff:nx-xoff]-=nu*(flux[xoff+1:nx-xoff+1]-flux[xoff:nx-xoff])    
     
 def main():
+    fcpy=np.zeros_like(f)
     init(x,f)
     t=0.0
     while(t < tmax):
         bc1d(f,xoff,0)
-        if (0):                 # 1 for SL scheme, 0 for FV-RK2 scheme
+        if (1):                 # 1 for SL scheme, 0 for FV-RK2 scheme
             csl3rd(f,v,dt,dx,xoff)
         else :
             fcpy=f.copy()
