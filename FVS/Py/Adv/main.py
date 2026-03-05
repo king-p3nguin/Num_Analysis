@@ -41,7 +41,7 @@ def bc1d(f,xoff,dnx=0):         # Boundary condition
 def fv3rd(f,v,dt,dx,xoff=2):       # 3rd-order finite-volume scheme
     nx=len(f)
     nu=v*dt/dx
-    sgnv=1 if (v > 0) else -1
+    sgnv=np.sign(v)
     flux=np.zeros_like(f)
     flux[2:-1]=0.5*(+(1+sgnv)*(-f[0:-3]+5*f[1:-2]+2*f[2:-1])
                     +(1-sgnv)*(-f[3:  ]+5*f[2:-1]+2*f[1:-2]))/6.0
@@ -50,7 +50,7 @@ def fv3rd(f,v,dt,dx,xoff=2):       # 3rd-order finite-volume scheme
 def csl3rd(f,v,dt,dx,xoff=2):       # 3rd-order conservative semi-Lagrangian scheme
     nx=len(f)
     nu=v*dt/dx
-    sgnv=1 if (v > 0) else -1
+    sgnv=np.sign(v)
     flux=np.zeros_like(f)
     c0l=(-f[0:-3]+5*f[1:-2]+2*f[2:-1])/6.0
     c0r=(-f[3:  ]+5*f[2:-1]+2*f[1:-2])/6.0
