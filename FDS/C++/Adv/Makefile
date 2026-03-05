@@ -1,6 +1,5 @@
-CXX = g++
-CXXFLAGS = -O2 -march=native
 INCDIR = ../common
+include $(INCDIR)/Makefile.inc
 
 OBJ = main.o adv1d.o $(INCDIR)/bound.o
 TARGET = a.out

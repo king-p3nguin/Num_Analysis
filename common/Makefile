@@ -1,5 +1,4 @@
-CXX = g++
-CXXFLAGS = -O2 -march=native
+include Makefile.inc
 
 OBJ = bound.o
 
