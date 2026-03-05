@@ -5,23 +5,27 @@
 - Vlasov: 運動論シミュレーション
 - common: 共通C++プログラム
 
-C++とPythonプログラムが配布されていますので、お好きな方をお使いください。<br>
+C++とPythonプログラムが準備されていますので、お好きな方をご利用ください。<br>
 そのまま使うもよし、機能を追加するもよし、自作の参考にするもよしです。<br>
 講義ではPythonを用います。<br>
 
 # どうやって使いますか?
-ローカル環境で使う場合は、ファイルをダウンロードするか、`> git clone git@github.com:minoshim/Num_Analysis.git`してください。<br>
-クラウド環境で使う場合は、Google Colabで開きますので、Googleアカウントをご準備ください。
+ローカル環境で使う場合は、ご自身のPCにファイルをダウンロードするか、
+```
+git clone git@github.com:minoshim/Num_Analysis.git
+```
+してください。<br>
+クラウド環境で使う場合は、Google Colabを使いますので、Googleアカウントをご準備ください。
 ## Python
-フォルダ`Py`の先にある`main.py`がバッチファイル、`hoge.ipynb`がノートブックです。<br>
-バッチファイルを使う場合は、numpy, scipy, matplitlibがインストール済みのpython環境を使います。
+ディレクトリ`Py`の先にある`main.py`がバッチファイル、`hoge.ipynb`がノートブックです。<br>
+バッチファイルをローカル環境で使う場合は、numpy, scipy, matplotlibがインストール済みのpythonを準備します。<br>
+pythonを実行して、
 ```
-> python
->>>  exec(open("main.py").read())
+exec(open("main.py").read())
 ```
-で実行されます。
+とすると計算が行われます。
 
-ノートブックを使う場合は、例えば
+ノートブックをクラウド環境で使う場合は、例えば
 ```
 https://github.com/minoshim/Num_Analysis/blob/main/FDS/Py/Adv/fds_adv.ipynb
 ```
@@ -33,27 +37,26 @@ https://colab.research.google.com/github/minoshim/Num_Analysis/blob/main/FDS/Py/
 （`https://github.com/`を`https://colab.research.google.com/github/`に変更しています）
 
 ## C++
-Linux環境（多分Macも可）での利用を想定しています。<br>
+ローカルのLinux環境（多分Macも可）での利用を想定しています。<br>
 c++コンパイラとmakeをインストールしてください。<br>
 まず、`common`ディレクトリにある`Makefile.inc`で、ご自身の環境に合わせてコンパイラとコンパイラオプションを変更してください。<br>
 変更したら、`common`ディレクトリにて
 ```
-> make clean
-> make
+make clean
+make
 ```
 とし、`bound.o`が作成されるか確認してください。<br>
-ここまでうまくいったら、課題のディレクトリまで移動し、
+ここまでうまくいったら、課題のディレクトリに移動し、
 ```
-> make
-> ./a.out
+make
+./a.out
 ```
 とすることで、プログラムが実行されます。<br>
-実行結果はPythonで可視化することができます（numpyとmatplitlibが必要）。読み込み用のバッチファイル`batch1d.py`などが準備されていますので、
+計算結果はPythonで可視化することができます（numpyとmatplotlibが必要）。読み込み用のバッチファイル`batch1d.py`などが準備されていますので、pythonを実行して、
 ```
-> python
->>> exec(open("batch1d.py").read())
+exec(open("batch1d.py").read())
 ```
-とします。すると`Input data directory (Ctrl-D to exit):`と聞かれますから、`.`と答えることで計算結果を読み込みます。<br>
+とします。すると`Input data directory (Ctrl-D to exit):`と聞かれますから、`.`と答えて計算結果を読み込みます。<br>
 詳しくはバッチファイルの中身をご覧ください。
 
 
