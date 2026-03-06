@@ -37,7 +37,7 @@ https://colab.research.google.com/github/minoshim/Num_Analysis/blob/main/FDS/Py/
 （`https://github.com/`を`https://colab.research.google.com/github/`に変更しています）
 
 ## C++
-ローカルのLinux環境（多分Macも可）での利用を想定しています。<br>
+ローカルのLinux環境（Windows Subsystem for Linuxを含む。多分Macも可）での利用を想定しています。<br>
 c++コンパイラとmakeをインストールしてください。<br>
 まず、`common`ディレクトリにある`Makefile.inc`で、ご自身の環境に合わせてコンパイラとコンパイラオプションを変更してください。<br>
 変更したら、`common`ディレクトリにて
