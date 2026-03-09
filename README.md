@@ -34,7 +34,8 @@ https://github.com/minoshim/Num_Analysis/blob/main/FDS/Py/Adv/fds_adv.ipynb
 https://colab.research.google.com/github/minoshim/Num_Analysis/blob/main/FDS/Py/Adv/fds_adv.ipynb
 ```
 と変更すると、Google Colabで開くことができます。<br>
-（`https://github.com/`を`https://colab.research.google.com/github/`に変更しています）
+（`https://github.com/`を`https://colab.research.google.com/github/`に変更しています）<br>
+また、ノートブックがあるディレクトリのREADMEに設置されている「Open in Tab」ボタンをクリックすると開くことができます。
 
 ## C++
 ローカルのLinux環境（Windows Subsystem for Linuxを含む。多分Macも可）での利用を想定しています。<br>
