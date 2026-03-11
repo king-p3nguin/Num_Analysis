@@ -20,6 +20,8 @@ q=-1.0                          # -1 for electrons
 ## Perturbation
 amp=0.05                        # Perturbation amplitude
 kk=0.5                       # Perturbation wavenumber
+vd=1.5                       # Drift velocity for two-stream instability
+vs=0.5                       # Thermal velocity for two-stream instability
 # End of user-set parameters
 
 # Grid width
@@ -44,7 +46,7 @@ def init(x,v,f):                  # Initialize
     x[:]=(i+0.5-xoff)*dx-0.5*lx
     v[:]=(j+0.5-voff)*dv-lv
     # fv=gaussian(v,0,1.0)
-    fv=(v**2)*gaussian(v,0,1.0) # For two-stream instability
+    fv=0.5*(gaussian(v,+vd,vs)+gaussian(v,-vd,vs)) # Two-stream instability
     fx=1.0+amp*np.cos(kk*x)
     f[:,:]=fv[:,None]*fx[None,:]
 
