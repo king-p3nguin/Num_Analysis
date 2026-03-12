@@ -34,7 +34,8 @@ for i in range(nx-2*xoff-1):
     p[:,i+1]=p[:,i]-g[:,i+1]*dx
 p=p-p.mean(axis=1,keepdims=True)
 
-# Total number, energy, and entropy
+# Total number, energy (for elesta plasma), and entropy
 num=f.sum(axis=(1,2))*dx*dv
-ene=0.5*((f*v[None,:,None]*v[None,:,None]).sum(axis=(1,2))+(g*g).sum(axis=1))*dx*dv
+ene=0.5*( +(f*v[None,:,None]*v[None,:,None]).sum(axis=(1,2))*dv*dx
+          +(g*g).sum(axis=1)*dx )
 ent=(f*(1-f)).sum(axis=(1,2))*dx*dv
