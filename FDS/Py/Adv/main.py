@@ -52,12 +52,35 @@ def upwd(f,v,dt,dx,xoff=1):       # Upwind scheme
     df=np.zeros_like(f)
     df[1:-1]=0.5*((1+sgnv)*(f[1:-1]-f[:-2])+(1-sgnv)*(f[2:]-f[1:-1]))
     f[xoff:nx-xoff]-=nu*df[xoff:nx-xoff]
+
+def lawe(f,v,dt,dx,xoff=1):       # Lax Wendroff scheme
+    nx=len(f)
+    nu=v*dt/dx
+    df=np.zeros_like(f)
+    df[1:-1]=0.5*((f[2:]-f[:-2])-nu*(f[2:]-2*f[1:-1]+f[:-2]))
+    f[xoff:nx-xoff]-=nu*df[xoff:nx-xoff]
+
+def sl3rd(f,v,dt,dx,xoff=2):       # 3rd-order SL scheme
+    nx=len(f)
+    nu=v*dt/dx
+    sgnv=np.sign(v)
+    c0 =f[2:-2]
+    c1l=(+f[0:-4]-6*f[1:-3]+3*f[2:-2]+2*f[3:-1])/6.0
+    c1r=(-f[4:  ]+6*f[3:-1]-3*f[2:-2]-2*f[1:-3])/6.0
+    c2 =0.5*(f[1:-3]-2*f[2:-2]+f[3:-1])
+    c3l=(-f[0:-4]+3*f[1:-3]-3*f[2:-2]+f[3:-1])/6.0
+    c3r=(+f[4:  ]-3*f[3:-1]+3*f[2:-2]-f[1:-3])/6.0
+    fl=c0-nu*(c1l-nu*(c2-nu*c3l))
+    fr=c0-nu*(c1r-nu*(c2-nu*c3r))
+    f[xoff:nx-xoff]=0.5*(+(1+sgnv)*fl+(1-sgnv)*fr)
     
 def main(t,tmax):
     while(t < tmax):
         bc1d(f,xoff,0)
         # ftcs(f,v,dt,dx,xoff)
         upwd(f,v,dt,dx,xoff)
+        # lawe(f,v,dt,dx,xoff)
+        # sl3rd(f,v,dt,dx,xoff)
         t += dt
     return t
 

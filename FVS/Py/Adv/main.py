@@ -38,6 +38,19 @@ def bc1d(f,xoff,dnx=0):         # Boundary condition
         f[:xoff] = dnx * f[xoff : 2*xoff][::-1]
         f[nx - xoff:] = dnx * f[nx - 2*xoff : nx - xoff][::-1]
 
+def minmod(a,b):
+    return np.where(a*b < 0, 0, np.where(np.abs(a) < np.abs(b), a, b))
+
+def musclmm(f,v,dt,dx,xoff=2):
+    nx=len(f)
+    nu=v*dt/dx
+    sgnv=np.sign(v)
+    flux=np.zeros_like(f)
+    slopel=minmod(f[1:-2]-f[0:-3],f[2:-1]-f[1:-2])
+    sloper=minmod(f[2:-1]-f[1:-2],f[3:  ]-f[2:-1])
+    flux[2:-1]=0.5*(+(1+sgnv)*(f[1:-2]+0.5*slopel)+(1-sgnv)*(f[2:-1]-0.5*sloper))
+    f[xoff:nx-xoff]-=nu*(flux[xoff+1:nx-xoff+1]-flux[xoff:nx-xoff])
+    
 def fv3rd(f,v,dt,dx,xoff=2):       # 3rd-order finite-volume scheme
     nx=len(f)
     nu=v*dt/dx
@@ -66,13 +79,13 @@ def main(t,tmax):
     fcpy=np.zeros_like(f)
     while(t < tmax):
         bc1d(f,xoff,0)
-        if (1):                 # 1 for SL scheme, 0 for FV-RK2 scheme
+        if (0):                 # 1 for SL scheme, 0 for FV-RK2 scheme
             csl3rd(f,v,dt,dx,xoff)
         else :
             fcpy=f.copy()
-            fv3rd(f,v,dt,dx,xoff)
+            musclmm(f,v,dt,dx,xoff)
             bc1d(f,xoff,0)
-            fv3rd(f,v,dt,dx,xoff)
+            musclmm(f,v,dt,dx,xoff)
             f[xoff:nx-xoff]=0.5*(f[xoff:nx-xoff]+fcpy[xoff:nx-xoff])
         t += dt
     return t
