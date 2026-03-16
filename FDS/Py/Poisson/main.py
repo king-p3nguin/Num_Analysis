@@ -112,4 +112,4 @@ if __name__ == "__main__":
     init(x,y,f,rhs)
     poi2d_ja(f,rhs,dx,dy,xoff,yoff,0,0,eps,itmax,omegaj)
     d2f=lap2d(f,dx,dy)          # Left hand side
-    err[yoff:ny-yoff,xoff:nx-xoff]=(d2f+rhs)[yoff:ny-yoff,xoff:nx-xoff]
+    err[yoff:-yoff,xoff:-xoff]=(d2f+rhs)[yoff:-yoff,xoff:-xoff]
