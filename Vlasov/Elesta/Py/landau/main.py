@@ -69,6 +69,27 @@ def bc2d(f,xoff,yoff,dnx=0,dny=0): # Boundary condition
         f[:yoff, :] = dny * f[yoff:2*yoff, :][::-1, :] # Bottom
         f[ny-yoff:, :] = dny * f[ny-2*yoff:ny-yoff, :][::-1, :] # Top
 
+def minmod(a,b):
+    return np.where(a*b < 0, 0, np.where(np.abs(a) < np.abs(b), a, b))
+def mm3(a,b,c):
+    return minmod(minmod(a,b),c)
+def cslmsl(f,v,dt,dx,xoff=2):       # Conservative SL-MUSCL scheme
+    nx=len(f)
+    nu=v*dt/dx
+    sgnv=np.sign(v)
+    flux=np.zeros_like(f)
+    c0l=(-f[0:-3]+5*f[1:-2]+2*f[2:-1])/6.0
+    c0r=(-f[3:  ]+5*f[2:-1]+2*f[1:-2])/6.0
+    c1 =f[2:-1]-f[1:-2]
+    c2l=(f[0:-3]-2*f[1:-2]+f[2:-1])*0.5
+    c2r=(f[3:  ]-2*f[2:-1]+f[1:-2])*0.5
+    ftl=c0l+nu*(-c1*0.5+c2l*nu/3.0)
+    ftr=c0r+nu*(-c1*0.5+c2r*nu/3.0)
+    slopel=mm3(f[1:-2]-f[0:-3],f[2:-1]-f[1:-2],ftl-f[1:-2])
+    sloper=mm3(f[2:-1]-f[1:-2],f[3:  ]-f[2:-1],f[2:-1]-ftr)
+    flux[2:-1]=0.5*((1+sgnv)*(f[1:-2]+slopel)+(1-sgnv)*(f[2:-1]-sloper))
+    f[xoff:nx-xoff]-=nu*(flux[xoff+1:nx-xoff+1]-flux[xoff:nx-xoff])
+        
 def csl3rd(f,v,dt,dx,xoff=2):       # 3rd-order conservative semi-Lagrangian scheme
     nx=len(f)
     nu=v*dt/dx
@@ -87,13 +108,13 @@ def csl3rd(f,v,dt,dx,xoff=2):       # 3rd-order conservative semi-Lagrangian sch
 def pushx(f,v,dt,dx,xoff=2,voff=2):
     bc2d(f,xoff,voff,0,999) # Periodic in X, nothing to do in V
     for fi,vi in zip(f[voff:-voff,:],v[voff:-voff]):
-        csl3rd(fi,vi,dt,dx,xoff)
+        cslmsl(fi,vi,dt,dx,xoff)
 
 def pushv(f,g,dt,dv,xoff=2,voff=2):
     nv,nx=f.shape
     for i in range(xoff,nx-xoff):
         ftmp = f[:, i].copy()
-        csl3rd(ftmp, 0.5*(g[i]+g[i+1]), dt, dv, voff)
+        cslmsl(ftmp, 0.5*(g[i]+g[i+1]), dt, dv, voff)
         f[voff:nv-voff, i] = ftmp[voff:nv-voff]
     
 def main(t,tmax):
